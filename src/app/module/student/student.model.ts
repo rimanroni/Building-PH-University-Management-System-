@@ -3,12 +3,13 @@ import { model, Schema } from 'mongoose';
 import {
   Guardian,
   LocalGuardian,
-  StudentMethod,
-  StudentModels,
+  
   TStudent,
   UserName,
 } from './student.interface';
+import  bcrypt  from 'bcrypt';
 import validator from 'validator';
+import config from '../../config';
 
 const userNameSchema = new Schema<UserName>({
   firstName: {
@@ -80,13 +81,20 @@ const LocalGuardianSchema = new Schema<LocalGuardian>({
   },
 });
 
-const StudentSchema = new Schema<TStudent, StudentModels, StudentMethod>({
+const StudentSchema = new Schema<TStudent>({
   id: {
-    type: String,
-    required: [true, 'id required '],
+    type: String, 
+    required: [true, 'id required '], 
     unique : true, 
   
   },
+  user : {
+    type : Schema.Types.ObjectId, 
+    required : [true, 'user id  must be required '], 
+    unique : true, 
+    ref : "user"
+  } ,
+  
   name: {
     type : userNameSchema, 
     required : [true, 'name filed required']
@@ -106,10 +114,7 @@ const StudentSchema = new Schema<TStudent, StudentModels, StudentMethod>({
     type: String,
     required: [true, 'email must be required'],
     trim : true, 
-    validate : {
-      validator : (email:string)=> validator.isEmail(email), 
-      message : "{VALUE} is not a valid email"
-    }
+  
   },
   contactNumber: {
     type: String,
@@ -117,7 +122,7 @@ const StudentSchema = new Schema<TStudent, StudentModels, StudentMethod>({
   },
   emergencyContactNumber: {
     type: String,
-    required: true,
+    
   },
   bloodGroup: {
     type: String,
@@ -145,19 +150,38 @@ const StudentSchema = new Schema<TStudent, StudentModels, StudentMethod>({
     type: String,
     trim : true
   },
-  isActive: {
-    type: String,
-    enum: {
-      values: ['active', 'inActive'],
-      message : "{VALUE} is not a valid"
-    },
-    default : "active"
-  },
+ 
+  isDeleted:{
+    type : Boolean, 
+    default : false
+  }
 });
+ 
+// midliware  mongoos
+  
+// save pre hook 
 
 
-StudentSchema.methods.isExitsUser = async function(id:string){
-  const exitesUser = await StudentModel.findOne({id:id});
-  return exitesUser
-}
-export const StudentModel = model<TStudent, StudentModels>('student', StudentSchema);
+
+//  queary meddilware 
+// StudentSchema.pre('find', function(next){
+//   this.find({isDeleted :{ $ne : false}})
+//   next()
+// })
+// StudentSchema.pre('findOne', function(next){
+//   this.find({isDeleted :{ $ne : false}})
+//   next()
+// })
+
+
+
+// creating a custom method 
+
+ 
+
+
+// StudentSchema.methods.isExitsUser = async function(id:string){
+//   const exitesUser = await StudentModel.findOne({id:id});
+//   return exitesUser
+// }
+export const StudentModel = model<TStudent>('student', StudentSchema)

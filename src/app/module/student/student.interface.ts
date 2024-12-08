@@ -1,4 +1,4 @@
-import { Model } from "mongoose";
+import { Model, Types } from "mongoose";
 
 export type Guardian =  {
     fatherName: string;
@@ -21,6 +21,8 @@ export type LocalGuardian = {
 }
 export type TStudent = {
     id: string;
+    
+    user : Types.ObjectId,
     name: UserName;
     gender: 'male' | 'female';
     contactNumber: string;
@@ -33,11 +35,27 @@ export type TStudent = {
     guardian: Guardian;
     localGuardian: LocalGuardian;
     profileImg?: string;
-    isActive: 'active' | 'inActive';
+   
+    isDeleted : boolean
   
 }
-export type StudentMethod = {
-    isExitsUser(id:string) :  Promise<TStudent | null>
-}
 
-export type StudentModels = Model<TStudent,Record<string, never>, StudentMethod>
+ 
+
+
+
+// -------------for static method  --------------
+//  export  interface StudentModels extends Model<TStudent>{
+//     isStudentExites(id:string):Promise<TStudent | null>
+//  }
+
+
+// -------------for creating inostent --------------
+// creating a custom inostent method 
+// export type StudentMethod = {
+//     isExitsUser(id:string) :  Promise<TStudent | null>
+// }
+
+// 
+
+// export type StudentModels = Model<TStudent,Record<string, never>, StudentMethod>
