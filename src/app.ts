@@ -1,7 +1,11 @@
-import express, { Request, Response } from 'express'
+ 
+import express, {   Request, Response } from 'express'
 import cors from 'cors'
-import { StudentRouter } from './app/module/student/student.route';
-import { userRouter } from './app/module/user/user.router';
+ 
+ import { globalErrorHandler } from './app/middlewares/globalErrorHandler';
+import { notFund } from './app/middlewares/notFound';
+import router from './app/routes';
+  
 const app = express();
 
  
@@ -11,15 +15,23 @@ app.use(cors());
 
 // router 
 
-app.use('/api/v1/students', StudentRouter);
-app.use('/api/v1/user', userRouter);
+app.use('/api/v1' , router);
+ 
 
-app.get('/', (req:Request, res:Response) => {
+app.get('/', (_req:Request, res:Response) => {
   res.status(200).json({
     status : true, 
     message : "i love coding (●'◡'●)", 
     data : "successfully server respons 😉😎"
   })
 })
+
+// create a global error handle 
+
+app.use(globalErrorHandler )  //
+
+// not found middlware 
+app.use(notFund  )
+
 
 export default app;
