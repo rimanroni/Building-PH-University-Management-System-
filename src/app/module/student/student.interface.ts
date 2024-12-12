@@ -21,14 +21,14 @@ export type LocalGuardian = {
 }
 export type TStudent = {
     id: string;
-    
+    admissionSemester : Types.ObjectId,
     user : Types.ObjectId,
     name: UserName;
     gender: 'male' | 'female';
     contactNumber: string;
     email: string;
     emergencyContactNumber: string;
-    dateOfBrith: string;
+    dateOfBrith: Date
     bloodGroup: 'A+' | 'B+' | 'AB+' | 'A-' | 'B-' | 'AB-' | 'O+' | 'O-';
     presentAddresh?: string;
     parmanentAddresh?: string;

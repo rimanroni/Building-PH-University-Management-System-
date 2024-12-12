@@ -7,9 +7,9 @@ import {
   TStudent,
   UserName,
 } from './student.interface';
-import  bcrypt  from 'bcrypt';
+ 
 import validator from 'validator';
-import config from '../../config';
+ ;
 
 const userNameSchema = new Schema<UserName>({
   firstName: {
@@ -107,8 +107,8 @@ const StudentSchema = new Schema<TStudent>({
     required: [true, 'gender must be required'],
   },
   dateOfBrith: {
-    type: String,
-    required: true,
+    type: Date,
+  
   },
   email: {
     type: String,
@@ -154,6 +154,10 @@ const StudentSchema = new Schema<TStudent>({
   isDeleted:{
     type : Boolean, 
     default : false
+  }, 
+  admissionSemester : {
+    type : Schema.Types.ObjectId,
+    ref : 'academic'
   }
 });
  

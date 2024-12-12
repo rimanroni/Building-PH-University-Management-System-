@@ -5,6 +5,7 @@ import cors from 'cors'
  import { globalErrorHandler } from './app/middlewares/globalErrorHandler';
 import { notFund } from './app/middlewares/notFound';
 import router from './app/routes';
+import { AcademicRouter } from './app/module/academic-semester/academic.route';
   
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(cors());
 // router 
 
 app.use('/api/v1' , router);
+ 
  
 
 app.get('/', (_req:Request, res:Response) => {
